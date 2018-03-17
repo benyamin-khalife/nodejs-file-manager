@@ -1,0 +1,26 @@
+{
+  "name": "nitro-nodejs-fm",
+  "description": " easy Usage Nodejs File Manager And Project Manager",
+  "version": "0.0.1",
+  "author": "Benyamin Khalife <nvioir@gmail.com>",
+  "contributors": [
+    "Benyamin Khalife <nvioir@gmail.com>"
+  ],
+  "license": "Apache",
+  "repository": "benyamin-khalife/nodejs-file-manager",
+  "homepage": "http://nitrocode.ir/",
+  "keywords": [
+    "nitro-nodejs-fm"
+  ],
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "files": [
+    "LICENSE",
+    "Readme.md",
+    "app.js",
+    "/"
+  ]
+}
