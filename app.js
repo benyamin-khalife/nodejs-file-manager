@@ -32,7 +32,7 @@ view=__dirname +'/view/';
 uploadRoot='/home/';
 
 username='admin';
-password='ns123456ns';
+password='password1234';
 
 app.get('/', function(req, res) {
   res.render('index');
