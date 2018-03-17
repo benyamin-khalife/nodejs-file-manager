@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>nitro File Manager</title>
+
+  <style>
+  .loginpanel{
+    background: rgba(194, 195, 195, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+  }
+  .dirList-item{
+    margin-left: 1px !important;
+    margin-right: 1px !important;
+    margin-bottom: 1px !important;
+    border-radius: 3px;
+    background: #c5bfbf;
+    color: #2185d0;
+  }
+  .fs20{
+    font-size: 20px !important;
+  }
+  .js-file-style{
+    background: #4d4979;
+    margin-top: 4px !important;
+    border-radius: 5px;
+    color: greenyellow;
+
+  }
+  .message-header{
+    background: rgba(94, 89, 169, 0.61) !important;
+    color: #d6d3d3 !important;
+  }
+  .back-list{
+    background: rgba(115, 113, 112, 0.68) !important;
+  }
+  .div16-jabox{
+    height: 16px;
+  }
+  </style>
+
+  <link rel="stylesheet" type="text/css" href="/semantic/semantic.min.css">
+  <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <script src="/semantic/semantic.min.js"></script>
+
+  <link href="/uploadlib/uploadfile.css" rel="stylesheet">
+  <script src="/uploadlib/jquery.uploadfile.min.js"></script>
+
+</head>
+<body style="background: #33302e;">
+  <div class="ui inverted menu">
+    <a class="active item">
+      Home
+    </a>
+    <a class="item">
+      Github
+    </a>
+  </div>
+
+  <div class="ui stackable grid">
+
+    <div class=" five wide column">
+      <div class="" style="padding-left: 5px;">
+        <div class="ui attached message message-header">
+          <div class="header">
+            Upload Files
+          </div>
+        </div>
+        <div class="ui grid attached fluid segment ">
+
+          <div class="sixteen wide column ">
+            <div id="fileuploader">Upload</div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+    <div class="six wide column">
+      <div class="">
+        <div class="ui attached message message-header">
+          <div class="header">
+
+            <div class="ui grid">
+              <div class="eight wide column middle aligned">
+                File List & Routing
+              </div>
+
+              <div class="eight wide column right aligned">
+                <div class="ui small basic icon buttons">
+                  <button onclick="location.reload();" class="ui button"><i class="redo alternate green icon"></i></button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+        <div class="ui grid attached fluid segment back-list">
+
+
+          <div class="three wide column">
+            <div onclick="backPath();" class="ui blue button">
+              Back
+            </div>
+          </div>
+          <div class="ten wide column">
+            <div class="ui input" style="width: 100%;">
+              <input id="path" type="text" text="" placeholder="in to /home/{your_path}">
+            </div>
+          </div>
+          <div class="three wide column">
+            <div onclick="setPath();" class="ui blue button">
+              Set
+            </div>
+          </div>
+
+          <div id="dirList_box" class="sixteen wide column">
+
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="five wide column">
+      <div class="" style="padding-right:4px;">
+
+        <div class="ui attached message message-header" >
+          <div class="header">
+
+            <div class="ui grid">
+              <div class="eight wide column middle aligned">
+                Node App Process
+              </div>
+
+              <div class="eight wide column right aligned">
+                <div class="ui small basic icon buttons">
+                  <button onclick="location.reload();" class="ui button"><i class="redo alternate green icon"></i></button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      <!--  <div class="ui grid attached fluid segment back-list">
+          <div class="ui top attached tabular menu">
+            <a class="active item back-list" data-tab="first">js File</a>
+            <a class="item back-list" data-tab="second">node App List</a>
+          </div>
+          <div id="js_file_box" class="ui bottom attached active tab segment back-list" style="padding: 17px;" data-tab="first">
+            <div id="div16-jabox" class="div16-jabox" >
+
+            </div>
+          </div>
+          <div id="node_app_box" class="ui bottom attached tab segment back-list" data-tab="second">
+          </div>
+
+        </div>  -->
+          <div class="ui grid attached fluid segment back-list">
+
+        <div id="tab_app" class="ui top attached tabular menu">
+          <a class="active item" data-tab="tab_1">js File</a>
+          <a class="item" data-tab="tab_2">node App List</a>
+        </div>
+        <div id="js_file_box" class="ui bottom attached active tab segment back-list" data-tab="tab_1">
+          <div id="div16-jabox" class="div16-jabox" >
+
+          </div>
+        </div>
+        <div id="node_app_box" class="ui bottom attached tab segment back-list" data-tab="tab_2">
+
+        </div>
+
+</div>
+
+      </div>
+    </div>
+  </div>
+
+<!-- hide element -->
+<div style="display: none;">
+
+  <div id="dirList_box_item" class="ui grid middle aligned dirList-item" style="">
+
+    <div class="ten wide column middle aligned">
+      <i class="fs20 orange folder icon"></i><b id="dirList_box_item_name"></b>
+    </div>
+    <div class="six wide column right aligned">
+      <div class="ui buttons">
+        <button name="" class="ui blue button buton_opendir"><i class="folder open icon"></i></button>
+        <div class="or"></div>
+        <button class="ui red button buton_delete"><i class="trash alternate icon"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="dirList_box_item_file" class="ui grid middle aligned dirList-item" style="">
+    <div  class="ten wide column middle aligned">
+      <i class="file alternate icon fs20"></i> <b id="dirList_box_item_name" ></b>
+    </div>
+    <div class="six wide column right aligned">
+      <div class="ui buttons">
+        <button name="" class="ui blue button buton_download"><i class="download icon"></i></button>
+        <div class="or"></div>
+        <button class="ui red button buton_delete"><i class="trash alternate icon"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="js_file_item" class="ui grid js-file-style">
+    <div class="eleven wide column middle aligned">
+      <i class="fs20 green file code icon"></i>
+      <b id="js_file_item_name">appname.js</b>
+    </div>
+    <div class="five wide column right aligned">
+      <button class="circular ui icon button start_new_app_button">
+        <i class="icon green play"></i>
+      </button>
+    </div>
+  </div>
+
+
+  <div id="node_app_item" class="ui grid js-file-style">
+    <div class="eleven wide column middle aligned">
+        <b id="node_app_item_pm_id"></b>
+      <i class="fs20 microchip icon">
+      </i>
+
+      <b id="node_app_item_name">appname.js</b>
+    </div>
+
+    <div class="five wide column right aligned">
+        <button  id="node_app_log" class="ui compact icon button node_app_log">
+          log
+        </button>
+        <button id="node_app_action" class="ui compact icon button node_app_action">
+          <i  class="icon green play action_icon"></i>
+        </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- modal -->
+
+<div id="log_modal" class="ui modal">
+  <div class="header">
+    <div class="ui grid">
+      <div class="eight wide column">
+        Logs
+      </div>
+      <div id="empty_log" class="eight wide column right aligned">
+        <button class="ui orange button">
+          Empty Log
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="ui grid attached fluid segment">
+      <div id="tab_log" class="ui top attached tabular menu">
+        <a class="item active red" data-tab="second">Error</a>
+        <a class="item blue  " data-tab="first">Log</a>
+
+      </div>
+
+      <div  id="log_modal_error"  style="width: 100%;white-space:pre-wrap;background: #464444;color: #dedc6c;padding: 8px;overflow: auto;max-height: 450px;" class="ui bottom attached active tab segment" data-tab="second">
+
+      </div>
+      <div id="log_modal_log" class="ui bottom  tab segment " style="width: 100%;white-space:pre-wrap;background: #464444;color: #dedc6c;padding: 8px;overflow: auto;max-height: 450px;" data-tab="first">
+
+      </div>
+    </div>
+
+  </div>
+  <div class="actions">
+    <div class="ui cancel green button">Cancel</div>
+  </div>
+</div>
+
+
+  <div id="delete_modal" class="ui tiny modal">
+    <div class="header"></div>
+    <div class="actions">
+      <div  class="ui approve orange button">Approve</div>
+      <div class="ui cancel green button">Cancel</div>
+    </div>
+  </div>
+
+  <div id="startApp_modal" class="ui tiny modal">
+    <div class="header">Run App Option</div>
+    <div class="content">
+
+      <div class="ui form">
+        <div class="field">
+          <label>App Name</label>
+          <input id="runappname_input" type="text"  placeholder="myApp">
+        </div>
+        <!--<div class="field">
+          <label>Max Memory Restart</label>
+          <input type="text" placeholder="50M">
+        </div>-->
+
+      </div>
+    </div>
+    <div class="actions">
+      <div id="startappbutton" class="ui approve orange button">Start</div>
+      <div class="ui cancel green button">Cancel</div>
+    </div>
+  </div>
+
+  <div id="msg_modal" class="ui tiny modal">
+    <div class="header"></div>
+    <div class="actions">
+      <div class="ui cancel blue button">ok</div>
+    </div>
+  </div>
+
+    <script type="text/javascript">
+
+    function msg(text) {
+      $("#msg_modal .header").text(text);
+      $("#msg_modal").modal('show');//show or hide
+
+    }
+    function del_msg(action,name){
+      $("#delete_modal .header").text(' Delete file : "'+name +'" ?');
+      $("#delete_modal").modal(action).data('name',name);//show or hide
+    }
+    function deleteItem() {
+      post={name:$("#delete_modal").data('name')}
+
+      $.post( "deleteItem",post)
+      .done(function(result) {
+        if(result.ok==true){
+          location.reload();
+        }
+        else{
+          msg('error');
+        }
+      })
+      .fail(function() {
+        msg('Error net')
+      })
+      .always(function() {
+      });
+    }
+    $(document).ready(function()
+    {
+      $("#fileuploader").uploadFile({
+        url:"/upload",
+        fileName:"myfile",
+        dragdropWidth:'auto',
+        statusBarWidth:'auto'
+      });
+    });
+
+    function setPath(dirpath) {
+      if(dirpath===undefined){
+        dirpath=$("#path").val()
+      }
+      post={path:dirpath}
+      $.post( "setPath",post)
+      .done(function(result) {
+        location.reload();
+      })
+      .fail(function() {
+        alert( "error" );
+      })
+      .always(function() {
+      });
+    }
+    function backPath() {
+      mpath=$("#path").val();
+      backpath=mpath.split('/');
+       backpath.splice(backpath.length-2,1)
+      setPath(backpath.join('/'));
+    }
+    function getPath() {
+      $.post( "setPath")
+      .done(function(result) {
+        $("#path").val(result.path);
+      })
+      .fail(function(err) {
+        msg('error net')
+
+      })
+    }
+getPath();
+function setClickEvent() {
+
+
+ $( document ).ready(function() {
+   $(".node_app_log").on('click',function() {
+     $(this).addClass('loading').attr('disabled',true);
+
+      button=$(this);
+
+     $.get('getLog',{log:$(this).data('log'),error:$(this).data('error')})
+
+     .done(function(result) {
+       console.log(result);
+       $("#log_modal").modal('show');
+       errortext=result.result.error;
+       logtext=result.result.log;
+       if (errortext.length > 3000) {
+         errortext=errortext.substring(errortext.length-3000, errortext.length-1);
+       }
+       if (logtext.length > 2000) {
+         logtext=logtext.substring(logtext.length-2500,logtext.length-1);
+       }
+       $("#log_modal_error").text(errortext);
+       $("#log_modal_log").text(logtext);
+       $("#empty_log").data('name',button.data('name'));
+
+     })
+     .fail(function() {
+       msg('error net')
+     })
+     .always(function() {
+       button.removeClass('loading').attr('disabled',false);
+
+     });
+   })
+   $(".node_app_action").on('click',function() {
+     $(this).addClass('loading').attr('disabled',true);
+     const button=$(this);
+     pm2($(this).data('action'),$(this).data('pm_id'),'id',function(a) {
+       button.removeClass('loading').attr('disabled',false);
+       setAppList(button,a)
+     });
+   })
+      $(".buton_delete").on('click',function() {
+        del_msg('show',$(this).data('name'));
+      })
+      $(".buton_download").on('click',function(e) {
+
+        downloadFile($(this).data('name'));
+      })
+      $("#delete_modal .orange.button").on('click',function() {
+        deleteItem();
+      })
+      $(".buton_opendir").on('click',function() {
+        setPath($(this).data('path'));
+      })
+      $("#empty_log").on('click',function () {
+        console.log($(this).data('name'));
+        $(this).addClass('loading').attr('disabled',true);
+        const button=$(this);
+        pm2('flush',$(this).data('name'),'id',function(a) {
+          button.removeClass('loading').attr('disabled',false);
+        });
+      })
+      $(".start_new_app_button").on('click',function() {
+
+        name=$(this).data('name');
+        $("#startApp_modal").modal('show');
+        $("#startappbutton").data('name',name);
+
+      })
+      $("#startappbutton").on('click',function() {
+        $(this).addClass('loading').attr('disabled',true);
+        pm2('start',$(this).data('name'),'path',function() {
+          $(this).removeClass('loading').attr('disabled',false);
+
+        },$("#runappname_input").val())
+
+      })
+    })
+
+  }
+    function pm2(action,name,by,callback,appname=null) {
+      $.post( "pm2",{action:action,name:name.toString(),by:by,'appname':appname})
+      .done(function(result) {
+        callback({ok:true,result:result})
+      })
+      .fail(function() {
+        callback({ok:false})
+
+      })
+      .always(function() {
+      });
+    }
+    $('#tab_app .item').tab();
+    $('#tab_log .item').tab();
+
+    </script>
+
+    <script type="text/javascript">
+
+    function setAppList(button,res) {
+
+
+      if (res.ok) {
+        if (res.result.ok ) {
+          if ( res.result.app.length <1) {
+            msg('error in action');
+            return;
+          }
+          status=res.result.app[0].pm2_env.status;
+          if (status==='online') {
+            button.find('.action_icon').removeClass('play green ').addClass('orange stop');
+            button.data('action','stop');
+          }
+          else {
+            button.find('.action_icon').removeClass('orange stop').addClass('play green ');
+            button.data('action','start');
+          }
+        }
+        else {
+          msg(res.result.msg)
+        }
+      }
+      else {
+        msg(res.msg)
+      }
+    }
+
+    </script>
+    <script type="text/javascript">
+    function getDirList() {
+      $.post( "getDirList")
+      .done(function(result) {
+        console.log(result);
+        mpath=result.path;
+        for (var i = 0; i < result.dirs.length; i++) {
+          if(result.dirs[i]===undefined){
+            continue;
+          }
+          cl=$( "#dirList_box_item" ).clone();
+          $('#dirList_box_item_name',cl).text(result.dirs[i]);
+          $('.buton_opendir',cl).data('path',mpath+result.dirs[i]);
+          $('.buton_delete',cl).data('name',result.dirs[i]);
+
+          cl.appendTo( "#dirList_box" );
+        }
+        //$( "#dirList_box_item" ).remove();
+        for (var i = 0; i < result.files.length; i++) {
+          if(result.files[i]===undefined){
+            continue;
+          }
+          cl=$( "#dirList_box_item_file" ).clone();
+          $('#dirList_box_item_name',cl).text(result.files[i]);
+          $('.buton_download',cl).data('name',result.files[i]);
+          $('.buton_delete',cl).data('name',result.files[i]);
+
+          cl.appendTo( "#dirList_box" );
+          checkjsfile=result.files[i].split('.');
+          if (checkjsfile.length==2 && checkjsfile[1]==='js') {
+            cl=$( "#js_file_item" ).clone();
+            $('#js_file_item_name',cl).text(result.files[i]);
+            $(".start_new_app_button",cl).data('name',result.files[i]);
+            cl.appendTo( "#js_file_box" );
+            $( "#div16-jabox" ).clone().appendTo( "#js_file_box" );
+
+          }
+        }
+        for (var i = 0; i < result.pm2.length; i++) {
+          if(result.pm2[i]===undefined){
+            continue;
+          }
+          try {
+
+
+          var cl=$( "#node_app_item" ).clone();
+          $('#node_app_item_name',cl).text(result.pm2[i].name);
+
+          $("#node_app_log",cl)
+          .data('log',result.pm2[i].pm2_env.pm_out_log_path)
+          .data('error',result.pm2[i].pm2_env.pm_err_log_path)
+          .data('name',result.pm2[i].pm_id);
+
+          if (result.pm2[i].pid>0) {
+            $('#node_app_action .action_icon',cl).removeClass('play green').addClass('stop orange');
+            $('#node_app_action',cl).data('action','stop').data('pm_id',result.pm2[i].pm_id);
+
+          }
+          else {
+            $('#node_app_action .action_icon',cl).removeClass('stop orange').addClass('play green');
+
+            $('#node_app_action',cl).data('action','start').data('pm_id',result.pm2[i].pm_id);
+          }
+          $('#node_app_item_pm_id',cl).text(result.pm2[i].pm_id);
+          cl.appendTo( "#node_app_box" );
+          $( "#div16-jabox" ).clone().appendTo( "#node_app_box" );
+        } catch (e) {
+          console.log(e);
+        }
+
+        }
+      })
+      .fail(function(err) {
+        msg('error net : getDirList')
+        console.log(err);
+      }).always(function () {
+        /*$( "#dirList_box_item_file" ).remove();
+        $( "#js_file_item" ).remove();*/
+        $( "#div16-jabox" ).remove();
+        setClickEvent();
+      })
+    }
+    getDirList();
+
+    function downloadFile(name) {
+      window.open('/downloadFile?name='+name , '_blank');
+        //window.location.replace('/downloadFile?name='+name)
+    }
+    </script>
+</body>
+</html>
