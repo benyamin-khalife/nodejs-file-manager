@@ -1,26 +1,35 @@
 {
   "name": "nitro-nodejs-fm",
-  "description": " easy Usage Nodejs File Manager And Project Manager",
   "version": "0.0.1",
-  "author": "Benyamin Khalife <nvioir@gmail.com>",
-  "contributors": [
-    "Benyamin Khalife <nvioir@gmail.com>"
-  ],
-  "license": "Apache",
-  "repository": "benyamin-khalife/nodejs-file-manager",
-  "homepage": "http://nitrocode.ir/",
-  "keywords": [
-    "nitro-nodejs-fm"
-  ],
-  "dependencies": {},
-  "devDependencies": {},
-  "engines": {
-    "node": ">= 0.10.0"
+  "description": "easy Usage Nodejs File Manager And Project Manager ",
+  "main": "app.js",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-fileupload": "^0.4.0",
+    "express-session": "^1.15.6",
+    "pm2": "^2.10.1"
   },
-  "files": [
-    "LICENSE",
-    "Readme.md",
-    "app.js",
-    "/"
-  ]
+  "devDependencies": {},
+  "scripts": {
+    "test": "testtt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benyamin-khalife/nodejs-file-manager.git"
+  },
+  "keywords": [
+    "nodejs",
+    "node",
+    "file",
+    "manager",
+    "file",
+    "manager"
+  ],
+  "author": "Benyamin Khalife",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/benyamin-khalife/nodejs-file-manager/issues"
+  },
+  "homepage": "https://github.com/benyamin-khalife/nodejs-file-manager#readme"
 }
